@@ -1,18 +1,23 @@
-let container = document.querySelector(".main-wrapper");
-let section1 = document.querySelector(".section-1");
-let section2 = document.querySelector(".section-2");
+gsap.registerPlugin(Flip);
 
-let tl = gsap.timeline({
-    scrollTrigger: {
-        trigger:container,
-        scrub: 1,
-        pin: true,
-        start: "top top",
-        end: "+=1000",
-    }
+let cats = gsap.utils.toArray("figure");
+let bigCat = cats[0];
+
+cats.forEach((dog) =>{
+    dog.addEventListener('click',(e) => changeGrid(dog))
 })
-.to(container,{
-    x:()=>-(container.scrollWidth - document.documentElement.clientWidth)+"px",
-    ease:"none",
-    duration:2,
-})
+
+function changeGrid(cat){
+    if(cat===bigCat) return;
+
+    let state = Flip.getState(cats)
+
+    bigCat.dataset.grid = cat.dataset.grid;
+    cat.dataset.grid="img-1";
+    bigCat=cat;
+
+    Flip.from(state,{
+        absolute:true,
+        ease:'Power1.inOut'
+    })
+}
